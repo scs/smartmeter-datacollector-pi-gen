@@ -2,14 +2,9 @@
 
 install -m 755 files/resize2fs_once	"${ROOTFS_DIR}/etc/init.d/"
 
-install -d				"${ROOTFS_DIR}/etc/systemd/system/rc-local.service.d"
-install -m 644 files/ttyoutput.conf	"${ROOTFS_DIR}/etc/systemd/system/rc-local.service.d/"
-
 install -m 644 files/50raspi		"${ROOTFS_DIR}/etc/apt/apt.conf.d/"
 
 install -m 644 files/console-setup   	"${ROOTFS_DIR}/etc/default/"
-
-install -m 755 files/rc.local		"${ROOTFS_DIR}/etc/"
 
 if [ -n "${PUBKEY_SSH_FIRST_USER}" ]; then
 	install -v -m 0700 -o 1000 -g 1000 -d "${ROOTFS_DIR}"/home/"${FIRST_USER_NAME}"/.ssh
@@ -70,3 +65,14 @@ usermod --pass='*' root
 EOF
 
 rm -f "${ROOTFS_DIR}/etc/ssh/"ssh_host_*_key*
+
+sed -i "s/PLACEHOLDER//" "${ROOTFS_DIR}/etc/default/keyboard"
+on_chroot << EOF
+DEBIAN_FRONTEND=noninteractive dpkg-reconfigure keyboard-configuration
+EOF
+
+sed -i 's/^#\?Storage=.*/Storage=volatile/' "${ROOTFS_DIR}/etc/systemd/journald.conf"
+
+if [ -e "${ROOTFS_DIR}/etc/avahi/avahi-daemon.conf" ]; then
+  sed -i 's/^#\?publish-workstation=.*/publish-workstation=yes/' "${ROOTFS_DIR}/etc/avahi/avahi-daemon.conf"
+fi
