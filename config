@@ -1,6 +1,6 @@
-IMG_NAME="smartmeter_demo_rpi_image"
+IMG_NAME="smartmeter-rpi-demo-$RELEASE-$ARCH"
+PI_GEN_RELEASE="Smartmeter Toolkit Demo"
 LOCALE_DEFAULT="en_US.UTF-8"
-KEYBOARD_KEYMAP=""
 KEYBOARD_LAYOUT="Switzerland"
 TIMEZONE_DEFAULT="Europe/Zurich"
 ENABLE_SSH=1
