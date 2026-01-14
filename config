@@ -1,4 +1,4 @@
-IMG_NAME="smartmeter-rpi-demo-$RELEASE-$ARCH"
+IMG_NAME="smartmeter-rpi-demo"
 PI_GEN_RELEASE="Smartmeter Toolkit Demo"
 LOCALE_DEFAULT="en_US.UTF-8"
 KEYBOARD_LAYOUT="Switzerland"
