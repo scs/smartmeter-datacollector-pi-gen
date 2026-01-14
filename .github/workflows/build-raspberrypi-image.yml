@@ -8,26 +8,25 @@ on:
       - "v*"
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   build-raspberrypi-image:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     name: Build a Raspberry Pi OS image
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Prepare build environment
         run: |
           sudo apt update
-          sudo apt-get -y install qemu-user-static
+          sudo apt-get -y install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
+          dosfstools e2fsprogs libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc \
+          gpg pigz xxd arch-test bmap-tools
 
       - name: Build the Raspberry Pi OS image
-        run: ./build-docker.sh
+        run: sudo ./build.sh
 
       - name: Archive the Raspberry Pi OS image
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: raspberrypi-os-image
+          name: smartmeter-rpi-demo-image
           path: deploy/*.zip
